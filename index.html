@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire Patrimoine Managérial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bleu-profond: #0f172a;
+            --bleu-moyen: #1e293b;
+            --bleu-clair: #334155;
+            --gris-bleu: #64748b;
+            --gris-clair: #94a3b8;
+            --blanc: #f8fafc;
+            --blanc-pur: #ffffff;
+            --or: #fbbf24;
+            --or-fonce: #d97706;
+            --vert: #10b981;
+            --rouge: #ef4444;
+            --ingenieur: #2563eb;
+            --humaniste: #059669;
+            --collaboratif: #7c3aed;
+            --leader: #dc2626;
+            --artisan: #d97706;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans 3', -apple-system, sans-serif;
+            background: linear-gradient(180deg, var(--bleu-profond) 0%, var(--bleu-moyen) 100%);
+            color: var(--blanc);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Écran Introduction */
+        #intro {
+            text-align: center;
+            padding: 3rem 0;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .intro-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.3));
+            display: block;
+        }
+
+        #intro h2 {
+            font-family: 'Crimson Text', Georgia, serif;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 400;
+            color: var(--blanc);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        #intro h2 span {
+            background: linear-gradient(90deg, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-style: italic;
+        }
+
+        #intro p {
+            font-size: 1.1rem;
+            color: var(--gris-clair);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: var(--bleu-profond);
+            border: none;
+            padding: 1.1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(251, 191, 36, 0.3);
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4);
+        }
+
+        .intro-duration {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--gris-bleu);
+        }
+
+        /* Écran Quiz */
+        #quiz {
+            display: none;
+        }
+
+        .progress {
+            margin-bottom: 2.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-text {
+            color: var(--gris-bleu);
+            font-size: 0.9rem;
+        }
+
+        .progress-percent {
+            color: var(--or);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--bleu-clair);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, rgba(51, 65, 85, 0.5) 0%, rgba(30, 41, 59, 0.8) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .question-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: var(--bleu-profond);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-family: 'Crimson Text', Georgia, serif;
+            font-size: 1.4rem;
+            color: var(--blanc);
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .answer-btn {
+            background: rgba(51, 65, 85, 0.3);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            border-radius: 12px;
+            padding: 1.1rem 1.25rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            width: 100%;
+            font-family: 'Source Sans 3', sans-serif;
+            color: #e2e8f0;
+        }
+
+        .answer-btn:hover {
+            background: rgba(51, 65, 85, 0.5);
+            border-color: rgba(148, 163, 184, 0.3);
+        }
+
+        .answer-letter {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: rgba(148, 163, 184, 0.2);
+            color: var(--gris-clair);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .answer-text {
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Écran Résultats */
+        #resultats {
+            display: none;
+        }
+
+        .resultats-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .resultats-label {
+            color: var(--or);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.75rem;
+        }
+
+        .resultats-title {
+            font-family: 'Crimson Text', Georgia, serif;
+            font-size: clamp(2rem, 6vw, 2.8rem);
+            color: var(--blanc);
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .resultats-subtitle {
+            font-family: 'Crimson Text', Georgia, serif;
+            font-size: 1.2rem;
+            color: var(--gris-clair);
+            font-style: italic;
+        }
+
+        .radar-container {
+            background: rgba(51, 65, 85, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .radar-title {
+            color: var(--gris-clair);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .adn-card {
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .adn-icon {
+            position: absolute;
+            top: -50px;
+            right: -30px;
+            font-size: 10rem;
+            opacity: 0.1;
+        }
+
+        .adn-label {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .adn-text {
+            color: var(--blanc-pur);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+            font-family: 'Crimson Text', Georgia, serif;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-atouts {
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .card-dangers {
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-header-icon {
+            font-size: 1.5rem;
+        }
+
+        .card-header-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .card-atouts .card-header-title {
+            color: var(--vert);
+        }
+
+        .card-dangers .card-header-title {
+            color: var(--rouge);
+        }
+
+        .card-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .card-list li {
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .card-atouts .card-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--vert);
+        }
+
+        .card-dangers .card-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--rouge);
+        }
+
+        .dev-card {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .dev-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .dev-title {
+            color: var(--or);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .dev-text {
+            color: #e2e8f0;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin: 0;
+            font-family: 'Crimson Text', Georgia, serif;
+        }
+
+        .scores-card {
+            background: rgba(51, 65, 85, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .scores-title {
+            color: var(--gris-clair);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.25rem;
+        }
+
+        .score-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.875rem;
+        }
+
+        .score-label {
+            width: 120px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .score-icon {
+            font-size: 1.25rem;
+        }
+
+        .score-name {
+            color: #e2e8f0;
+            font-size: 0.85rem;
+        }
+
+        .score-bar {
+            flex: 1;
+            height: 10px;
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .score-value {
+            color: var(--blanc);
+            font-weight: 600;
+            width: 45px;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        .hybrides-card {
+            background: rgba(51, 65, 85, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .hybrides-title {
+            color: var(--gris-clair);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.25rem;
+        }
+
+        .hybrides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .hybride-item {
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .hybride-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .hybride-name {
+            color: var(--blanc-pur);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 0 0 0.25rem 0;
+        }
+
+        .hybride-score {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.8rem;
+            margin: 0;
+        }
+
+        .final-message {
+            background: rgba(51, 65, 85, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .final-message p {
+            color: var(--gris-clair);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin: 0;
+            font-family: 'Crimson Text', Georgia, serif;
+            font-style: italic;
+        }
+
+        .btn-restart {
+            display: block;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: transparent;
+            color: var(--gris-clair);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 50px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .btn-restart:hover {
+            border-color: var(--or);
+            color: var(--or);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+            .question-text {
+                font-size: 1.2rem;
+            }
+            .resultats-title {
+                font-size: 2rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Écran Introduction -->
+        <div id="intro">
+            <span class="intro-icon">🧭</span>
+            <h2>Découvrez votre<br><span>Patrimoine Managérial</span></h2>
+            <p>Chaque manager porte en lui un héritage invisible — une boîte à outils mentale qui dicte ses réflexes, oriente ses décisions et façonne sa vision du leadership.<br><br>En 15 situations concrètes, identifiez votre profil dominant, découvrez vos forces naturelles, vos angles morts et votre chemin de développement personnel.</p>
+            <button type="button" class="btn-start" onclick="demarrerQuiz()">Commencer le test →</button>
+            <p class="intro-duration">⏱ 8 minutes • 15 situations</p>
+        </div>
+
+        <!-- Écran Quiz -->
+        <div id="quiz">
+            <div class="progress">
+                <div class="progress-header">
+                    <span class="progress-text" id="progress-text">Situation 1 sur 15</span>
+                    <span class="progress-percent" id="progress-percent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-tag" id="question-tag"></div>
+                <div class="question-text" id="question-text"></div>
+            </div>
+            <div class="answers" id="answers"></div>
+        </div>
+
+        <!-- Écran Résultats -->
+        <div id="resultats"></div>
+    </div>
+
+    <script>
+        // Données des situations
+        const situations = [
+            { id: 1, titre: "Projet stratégique urgent", contexte: "Votre équipe doit livrer un projet stratégique dans un délai serré", reponses: [
+                { code: "A", texte: "Je décompose le projet en tâches précises avec un planning détaillé et des responsabilités claires" },
+                { code: "B", texte: "J'organise un brainstorming pour mobiliser l'intelligence collective et créer l'adhésion" },
+                { code: "C", texte: "Je constitue une équipe agile avec des sprints courts et des points d'étape réguliers" },
+                { code: "D", texte: "Je communique la vision du projet pour inspirer l'équipe et lever les obstacles" },
+                { code: "E", texte: "J'analyse les compétences disponibles et j'adapte l'organisation selon les profils" }
+            ]},
+            { id: 2, titre: "Conflit entre collaborateurs", contexte: "Un conflit majeur éclate entre deux collaborateurs clés", reponses: [
+                { code: "A", texte: "J'analyse factuellement la situation et je tranche selon les procédures établies" },
+                { code: "B", texte: "J'organise une médiation pour comprendre les émotions en jeu et restaurer la relation" },
+                { code: "C", texte: "Je crée un cadre de dialogue itératif pour co-construire une solution acceptable" },
+                { code: "D", texte: "Je recadre le conflit dans la vision commune pour dépasser les ego" },
+                { code: "E", texte: "J'explore les causes profondes en tenant compte de l'histoire personnelle de chacun" }
+            ]},
+            { id: 3, titre: "Transformation digitale", contexte: "Votre département doit s'adapter à une transformation digitale majeure", reponses: [
+                { code: "A", texte: "Je planifie la transformation par étapes avec des indicateurs de suivi précis" },
+                { code: "B", texte: "J'accompagne les résistances au changement en travaillant sur les peurs et motivations" },
+                { code: "C", texte: "Je lance des expérimentations pilotes pour apprendre en faisant et ajuster" },
+                { code: "D", texte: "Je porte une vision inspirante du futur pour mobiliser l'énergie collective" },
+                { code: "E", texte: "Je personnalise l'accompagnement selon les besoins spécifiques de chaque collaborateur" }
+            ]},
+            { id: 4, titre: "Collaborateur en difficulté", contexte: "Un collaborateur talentueux sous-performe depuis plusieurs semaines", reponses: [
+                { code: "A", texte: "J'identifie les écarts par rapport aux objectifs et je mets en place un plan d'action correctif" },
+                { code: "B", texte: "J'explore avec lui les causes personnelles ou relationnelles de cette baisse de performance" },
+                { code: "C", texte: "Je propose un fonctionnement en binôme ou en mob programming pour le remotiver" },
+                { code: "D", texte: "Je le reconnecte à sa mission et aux valeurs de l'équipe pour retrouver du sens" },
+                { code: "E", texte: "J'adapte temporairement ses missions à ses appétences pour relancer sa dynamique" }
+            ]},
+            { id: 5, titre: "Démarche RSE", contexte: "Votre organisation lance une démarche RSE ambitieuse", reponses: [
+                { code: "A", texte: "Je définis des objectifs chiffrés et des processus pour mesurer et piloter les progrès" },
+                { code: "B", texte: "Je sensibilise les équipes aux enjeux et je crée des espaces d'échange sur les valeurs" },
+                { code: "C", texte: "J'organise des ateliers collaboratifs pour co-créer les initiatives avec les volontaires" },
+                { code: "D", texte: "Je porte le changement en incarnant personnellement les nouveaux comportements" },
+                { code: "E", texte: "Je pars des motivations individuelles pour construire un engagement personnel de chacun" }
+            ]},
+            { id: 6, titre: "Nouvelle recrue à intégrer", contexte: "Un nouveau collaborateur rejoint votre équipe et doit être opérationnel rapidement", reponses: [
+                { code: "A", texte: "Je prépare un parcours d'intégration structuré avec des étapes claires et des livrables" },
+                { code: "B", texte: "J'organise des rencontres avec l'équipe pour créer des liens et un sentiment d'appartenance" },
+                { code: "C", texte: "Je l'intègre directement dans un projet en cours pour qu'il apprenne par la pratique collective" },
+                { code: "D", texte: "Je lui présente la vision de l'équipe et ce qu'on attend de lui dans cette aventure" },
+                { code: "E", texte: "Je prends le temps de comprendre son profil pour adapter son parcours d'intégration" }
+            ]},
+            { id: 7, titre: "Budget réduit", contexte: "Vous devez réduire votre budget de 20% tout en maintenant les objectifs", reponses: [
+                { code: "A", texte: "J'analyse chaque poste de dépense et je priorise selon le ROI et les risques" },
+                { code: "B", texte: "Je consulte l'équipe pour comprendre leurs besoins essentiels et leurs inquiétudes" },
+                { code: "C", texte: "Je réunis l'équipe pour trouver ensemble des solutions créatives d'optimisation" },
+                { code: "D", texte: "Je présente cette contrainte comme un défi stimulant et une opportunité de réinvention" },
+                { code: "E", texte: "J'examine les situations individuelles pour protéger les ressources critiques pour chacun" }
+            ]},
+            { id: 8, titre: "Innovation demandée", contexte: "La direction vous demande de proposer des innovations pour votre service", reponses: [
+                { code: "A", texte: "Je benchmark les meilleures pratiques du marché et je structure une analyse comparative" },
+                { code: "B", texte: "Je crée un climat de confiance où chacun ose proposer des idées sans crainte du jugement" },
+                { code: "C", texte: "J'organise des hackathons ou des ateliers de design thinking avec l'équipe" },
+                { code: "D", texte: "Je partage une vision ambitieuse qui ouvre le champ des possibles et libère la créativité" },
+                { code: "E", texte: "Je sollicite chaque collaborateur selon ses centres d'intérêt et expertises uniques" }
+            ]},
+            { id: 9, titre: "Réorganisation imposée", contexte: "Une réorganisation décidée par le siège bouleverse votre équipe", reponses: [
+                { code: "A", texte: "J'analyse les impacts, je clarifie les nouveaux processus et je redistribue les rôles" },
+                { code: "B", texte: "J'organise des temps d'échange pour permettre à chacun d'exprimer ses craintes" },
+                { code: "C", texte: "Je propose des groupes de travail pour co-définir la nouvelle organisation au quotidien" },
+                { code: "D", texte: "Je donne du sens à cette réorganisation en la reliant à une vision plus large" },
+                { code: "E", texte: "Je rencontre chaque collaborateur pour comprendre comment il vit ce changement" }
+            ]},
+            { id: 10, titre: "Démotivation générale", contexte: "Vous percevez une baisse de motivation générale dans votre équipe", reponses: [
+                { code: "A", texte: "Je mets en place des indicateurs pour objectiver la situation et identifier les causes" },
+                { code: "B", texte: "J'organise des entretiens individuels pour comprendre le ressenti de chacun" },
+                { code: "C", texte: "Je propose un atelier collectif pour que l'équipe identifie elle-même les problèmes et solutions" },
+                { code: "D", texte: "Je réaffirme le sens de notre mission et je célèbre les victoires récentes" },
+                { code: "E", texte: "Je cherche à remotiver chaque personne par des leviers adaptés à sa situation" }
+            ]},
+            { id: 11, titre: "Objectifs ambitieux", contexte: "Vos objectifs annuels sont revus à la hausse de manière significative", reponses: [
+                { code: "A", texte: "Je décline ces objectifs en sous-objectifs mesurables avec un plan d'action détaillé" },
+                { code: "B", texte: "Je prends le temps d'expliquer le contexte et de rassurer l'équipe sur sa capacité à réussir" },
+                { code: "C", texte: "Je mobilise l'équipe pour réfléchir ensemble aux moyens d'atteindre ces nouveaux objectifs" },
+                { code: "D", texte: "Je présente ces objectifs comme un défi excitant et une preuve de confiance envers l'équipe" },
+                { code: "E", texte: "J'adapte la contribution attendue de chacun en fonction de ses capacités actuelles" }
+            ]},
+            { id: 12, titre: "Feedback négatif", contexte: "Vous devez faire un feedback négatif à un collaborateur sur un travail insuffisant", reponses: [
+                { code: "A", texte: "Je prépare des faits précis et des exemples concrets pour étayer mon feedback" },
+                { code: "B", texte: "Je crée un cadre bienveillant et je commence par reconnaître ses qualités" },
+                { code: "C", texte: "Je propose un échange ouvert pour comprendre sa perception et construire ensemble un plan" },
+                { code: "D", texte: "Je relie ce feedback à son potentiel et à ce que j'attends de lui pour grandir" },
+                { code: "E", texte: "J'adapte ma manière de communiquer à sa personnalité et sa sensibilité" }
+            ]},
+            { id: 13, titre: "Télétravail à organiser", contexte: "Vous devez définir les règles de télétravail pour votre équipe", reponses: [
+                { code: "A", texte: "Je définis un cadre clair avec des règles précises sur les jours, horaires et livrables" },
+                { code: "B", texte: "Je m'assure que les règles préservent le lien social et le bien-être de chacun" },
+                { code: "C", texte: "Je co-construis les règles avec l'équipe pour qu'elles soient acceptées par tous" },
+                { code: "D", texte: "Je définis les principes directeurs et je fais confiance à l'équipe pour s'organiser" },
+                { code: "E", texte: "J'adapte les règles aux contraintes personnelles et aux métiers de chacun" }
+            ]},
+            { id: 14, titre: "Promotion interne", contexte: "Vous devez choisir un collaborateur pour une promotion parmi plusieurs candidats", reponses: [
+                { code: "A", texte: "J'établis une grille de critères objectifs et je compare les candidats méthodiquement" },
+                { code: "B", texte: "J'évalue leur capacité à créer de bonnes relations et à fédérer une équipe" },
+                { code: "C", texte: "J'organise des mises en situation collectives pour observer leur comportement en groupe" },
+                { code: "D", texte: "Je cherche celui qui incarne le mieux les valeurs et la vision de l'équipe" },
+                { code: "E", texte: "J'analyse le parcours et le potentiel unique de chaque candidat" }
+            ]},
+            { id: 15, titre: "Crise majeure", contexte: "Une crise grave impacte votre activité et nécessite une réaction immédiate", reponses: [
+                { code: "A", texte: "Je mets en place une cellule de crise avec un processus de décision clair" },
+                { code: "B", texte: "Je rassure d'abord l'équipe et je m'assure que chacun se sent soutenu" },
+                { code: "C", texte: "Je mobilise rapidement l'intelligence collective pour trouver des solutions" },
+                { code: "D", texte: "Je prends le lead visiblement et je communique avec assurance pour guider l'équipe" },
+                { code: "E", texte: "J'identifie les forces de chacun pour constituer la meilleure équipe de crise" }
+            ]}
+        ];
+
+        // Données des patrimoines
+        const patrimoines = {
+            A: { nom: "L'Ingénieur", sousTitre: "L'efficacité par la méthode", couleur: "#2563eb", gradient: "linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)", icone: "⚙️",
+                adn: "Vous considérez le management comme une science appliquée. Votre force : transformer la complexité en simplicité grâce à des méthodes éprouvées. Vous excellez dans la planification, l'analyse de risques, l'optimisation des processus. Vos équipes apprécient votre prévisibilité et votre capacité à livrer dans les délais.",
+                atouts: ["Clarté dans l'organisation et les responsabilités", "Capacité à tenir des engagements complexes", "Excellence dans la gestion de projet et la planification", "Talent pour identifier et corriger les dysfonctionnements"],
+                dangers: ["Tendance à sous-estimer le facteur humain et émotionnel", "Difficulté avec l'incertitude et l'ambiguïté", "Risque de sur-procédure qui bride la créativité", "Impatience face aux résistances « irrationnelles »"],
+                developpement: "Enrichissez votre approche méthodologique d'une dimension plus systémique. Intégrez progressivement le facteur humain comme un paramètre central de vos équations managériales. Votre capacité à créer du cadre sécurisant peut devenir un levier pour libérer la créativité plutôt que la contraindre. Travaillez votre tolérance à l'ambiguïté et développez votre écoute active."
+            },
+            B: { nom: "L'Humaniste", sousTitre: "La performance par l'épanouissement", couleur: "#059669", gradient: "linear-gradient(135deg, #047857 0%, #10b981 100%)", icone: "💚",
+                adn: "Vous croyez profondément que la performance naît de l'épanouissement humain. Vous excellez dans l'écoute, l'accompagnement des personnes, la création d'un climat de confiance. Votre conviction : des collaborateurs heureux sont des collaborateurs performants.",
+                atouts: ["Intelligence émotionnelle et empathie naturelle", "Capacité à révéler les potentiels cachés", "Talent pour créer de la cohésion d'équipe", "Excellence dans l'accompagnement du changement humain"],
+                dangers: ["Difficultés avec les collaborateurs manipulateurs ou toxiques", "Tendance à privilégier le consensus au détriment de l'efficacité", "Risque de burn-out par sur-investissement émotionnel", "Parfois perçu comme « trop gentil » par les équipes dirigeantes"],
+                developpement: "Apprenez à conjuguer bienveillance et exigence. Développez votre capacité à challenger avec bienveillance tout en maintenant des standards élevés. Renforcez votre assertivité face aux personnalités difficiles. Posez des limites claires pour vous protéger émotionnellement."
+            },
+            C: { nom: "Le Collaboratif", sousTitre: "L'innovation par l'intelligence collective", couleur: "#7c3aed", gradient: "linear-gradient(135deg, #6d28d9 0%, #a78bfa 100%)", icone: "🤝",
+                adn: "Vous incarnez l'évolution agile du management. Votre approche privilégie la co-construction, l'expérimentation, l'adaptation permanente. Votre conviction : l'intelligence collective surpasse toujours l'intelligence individuelle.",
+                atouts: ["Capacité à faire émerger l'intelligence collective", "Agilité face au changement et à l'incertitude", "Talent pour l'innovation et l'expérimentation", "Excellence dans l'animation d'ateliers collaboratifs"],
+                dangers: ["Difficultés avec les décisions impopulaires mais nécessaires", "Risque de « réunionite » et de paralysie par la consultation", "Tendance à sous-estimer l'importance du cadre et des processus", "Parfois perçu comme indécis"],
+                developpement: "Apprenez à concilier autonomie et alignement stratégique. Renforcez votre capacité à créer une vision partagée forte pour canaliser l'intelligence collective. Développez votre aisance à prendre des décisions seul quand c'est nécessaire."
+            },
+            D: { nom: "Le Leader", sousTitre: "La transformation par l'inspiration", couleur: "#dc2626", gradient: "linear-gradient(135deg, #b91c1c 0%, #f87171 100%)", icone: "🔥",
+                adn: "Vous croyez au pouvoir transformateur du leadership authentique. Vous excellez dans la création et le portage de vision, l'inspiration des équipes, la conduite du changement. Vos équipes vous suivent par adhésion plus que par contrainte.",
+                atouts: ["Charisme naturel et capacité d'inspiration", "Vision stratégique et sens de l'anticipation", "Talent pour mobiliser l'énergie collective", "Excellence dans la conduite du changement"],
+                dangers: ["Risque de sur-communication et de « gourou-isation »", "Difficultés avec les aspects opérationnels et techniques", "Tendance à sous-estimer les résistances pratiques", "Parfois perçu comme déconnecté du quotidien"],
+                developpement: "Apprenez à incarner votre vision dans le quotidien opérationnel. Développez votre capacité à traduire la vision en rituels, processus et comportements concrets. Renforcez votre attention aux détails pratiques."
+            },
+            E: { nom: "L'Artisan", sousTitre: "La personnalisation par l'attention", couleur: "#d97706", gradient: "linear-gradient(135deg, #b45309 0%, #fbbf24 100%)", icone: "✨",
+                adn: "Vous pratiquez un management « sur-mesure » qui s'adapte à chaque personne et situation. Vous excellez dans la personnalisation de l'accompagnement et la révélation des talents individuels.",
+                atouts: ["Capacité à révéler les talents cachés et atypiques", "Adaptation fine aux besoins individuels", "Excellence dans l'accompagnement du développement personnel", "Talent pour créer des parcours professionnels originaux"],
+                dangers: ["Difficultés à passer à l'échelle avec des équipes importantes", "Risque d'iniquité perçue entre collaborateurs", "Tendance à la surcharge par individualisation excessive", "Parfois perçu comme incohérent"],
+                developpement: "Apprenez à systémiser votre personnalisation sans la déshumaniser. Développez votre capacité à articuler épanouissement individuel et performance collective. Créez des cadres qui permettent la personnalisation à grande échelle."
+            }
+        };
+
+        const hybrideProfil = {
+            nom: "Le Caméléon", sousTitre: "La polyvalence adaptative", couleur: "#475569", gradient: "linear-gradient(135deg, #334155 0%, #64748b 50%, #94a3b8 100%)", icone: "🦎",
+            adn: "Votre polyvalence est une richesse rare. Vous pouvez adapter votre style selon les situations, piocher dans plusieurs boîtes à outils, comprendre différents types de collaborateurs.",
+            atouts: ["Flexibilité situationnelle remarquable", "Compréhension multi-perspective des enjeux", "Capacité à dialoguer avec tous les profils", "Répertoire managérial étendu"],
+            dangers: ["Incohérence perçue par vos équipes", "Épuisement du switch entre patrimoines", "Dilution d'expertise", "Syndrome de l'imposteur possible"],
+            developpement: "Cartographiez vos contextes d'activation : dans quelles situations activez-vous quel patrimoine ? Choisissez un patrimoine « socle » comme identité principale, et gardez les autres comme « compléments » contextuels."
+        };
+
+        const orphelinProfil = {
+            nom: "L'Explorateur", sousTitre: "Le patrimoine en construction", couleur: "#6366f1", gradient: "linear-gradient(135deg, #4f46e5 0%, #818cf8 50%, #c7d2fe 100%)", icone: "🧭",
+            adn: "Aucun patrimoine ne domine clairement. Vous êtes peut-être un jeune manager en construction, en remise en question, ou vous n'avez pas encore trouvé votre style naturel. C'est une opportunité unique.",
+            atouts: ["Ouverture à toutes les approches managériales", "Absence de biais ou de réflexes conditionnés", "Capacité à construire consciemment votre style", "Liberté de choisir votre patrimoine"],
+            dangers: ["Sentiment d'illégitimité possible", "Management sans cohérence apparente", "Risque de copier sans incarner", "Difficulté à inspirer confiance"],
+            developpement: "Acceptez ce vide comme une opportunité. Observez les managers qui vous inspirent et identifiez ce qui résonne avec vos valeurs. Choisissez consciemment un patrimoine « cible » et formez-vous spécifiquement."
+        };
+
+        // Variables d'état
+        let questionActuelle = 0;
+        let reponses = {};
+
+        // Fonction démarrer le quiz
+        function demarrerQuiz() {
+            document.getElementById('intro').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            afficherQuestion();
+        }
+
+        // Fonction afficher une question
+        function afficherQuestion() {
+            const situation = situations[questionActuelle];
+            const progression = (questionActuelle / situations.length) * 100;
+
+            document.getElementById('progress-text').textContent = 'Situation ' + (questionActuelle + 1) + ' sur ' + situations.length;
+            document.getElementById('progress-percent').textContent = Math.round(progression) + '%';
+            document.getElementById('progress-fill').style.width = progression + '%';
+            document.getElementById('question-tag').textContent = situation.titre;
+            document.getElementById('question-text').textContent = situation.contexte;
+
+            let answersHTML = '';
+            for (let i = 0; i < situation.reponses.length; i++) {
+                const reponse = situation.reponses[i];
+                answersHTML += '<button type="button" class="answer-btn" onclick="selectionnerReponse(\'' + reponse.code + '\')">';
+                answersHTML += '<span class="answer-letter">' + String.fromCharCode(65 + i) + '</span>';
+                answersHTML += '<span class="answer-text">' + reponse.texte + '</span>';
+                answersHTML += '</button>';
+            }
+            document.getElementById('answers').innerHTML = answersHTML;
+        }
+
+        // Fonction sélectionner une réponse
+        function selectionnerReponse(code) {
+            reponses[questionActuelle] = code;
+            if (questionActuelle < situations.length - 1) {
+                questionActuelle++;
+                setTimeout(afficherQuestion, 300);
+            } else {
+                setTimeout(afficherResultats, 500);
+            }
+        }
+
+        // Fonction calculer les résultats
+        function calculerResultats() {
+            const scores = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+            for (let key in reponses) {
+                scores[reponses[key]]++;
+            }
+            const maxScore = Math.max(scores.A, scores.B, scores.C, scores.D, scores.E);
+            const total = scores.A + scores.B + scores.C + scores.D + scores.E;
+            const dominants = [];
+            const seconds = [];
+            
+            for (let code in scores) {
+                if (scores[code] === maxScore) dominants.push(code);
+            }
+            
+            let secondMax = 0;
+            for (let code in scores) {
+                if (scores[code] < maxScore && scores[code] > secondMax) secondMax = scores[code];
+            }
+            for (let code in scores) {
+                if (scores[code] === secondMax && secondMax > 0) seconds.push(code);
+            }
+            
+            const moyenne = total / 5;
+            let variance = 0;
+            for (let code in scores) {
+                variance += Math.pow(scores[code] - moyenne, 2);
+            }
+            variance = variance / 5;
+            const ecartType = Math.sqrt(variance);
+            
+            const isOrphelin = ecartType < 1.5 && maxScore <= 4;
+            const isHybride = !isOrphelin && (dominants.length >= 2 || (dominants.length === 1 && seconds.length > 0 && maxScore - secondMax <= 2));
+            
+            return { scores, dominants, seconds, isHybride, isOrphelin, maxScore };
+        }
+
+        // Fonction dessiner le radar
+        function dessinerRadar(scores, size) {
+            const categories = [
+                { code: "A", label: "Ingénieur", color: "#2563eb" },
+                { code: "B", label: "Humaniste", color: "#059669" },
+                { code: "C", label: "Collaboratif", color: "#7c3aed" },
+                { code: "D", label: "Leader", color: "#dc2626" },
+                { code: "E", label: "Artisan", color: "#d97706" }
+            ];
+            const maxScoreRadar = 15;
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const radius = size * 0.35;
+            const angleStep = (2 * Math.PI) / 5;
+            const startAngle = -Math.PI / 2;
+
+            function getPoint(index, value) {
+                const angle = startAngle + index * angleStep;
+                const r = (value / maxScoreRadar) * radius;
+                return { x: centerX + r * Math.cos(angle), y: centerY + r * Math.sin(angle) };
+            }
+
+            function getLabelPoint(index) {
+                const angle = startAngle + index * angleStep;
+                const r = radius + 40;
+                return { x: centerX + r * Math.cos(angle), y: centerY + r * Math.sin(angle) };
+            }
+
+            let svg = '<svg width="' + size + '" height="' + size + '" style="overflow:visible">';
+            
+            // Grilles
+            const levels = [0.25, 0.5, 0.75, 1];
+            for (let l = 0; l < levels.length; l++) {
+                let points = '';
+                for (let i = 0; i < categories.length; i++) {
+                    const angle = startAngle + i * angleStep;
+                    const r = radius * levels[l];
+                    points += (centerX + r * Math.cos(angle)) + ',' + (centerY + r * Math.sin(angle)) + ' ';
+                }
+                svg += '<polygon points="' + points.trim() + '" fill="none" stroke="rgba(148,163,184,0.2)" stroke-width="1"/>';
+            }
+            
+            // Axes
+            for (let i = 0; i < categories.length; i++) {
+                const angle = startAngle + i * angleStep;
+                svg += '<line x1="' + centerX + '" y1="' + centerY + '" x2="' + (centerX + radius * Math.cos(angle)) + '" y2="' + (centerY + radius * Math.sin(angle)) + '" stroke="rgba(148,163,184,0.3)" stroke-width="1"/>';
+            }
+            
+            // Zone données
+            const dataPoints = [];
+            for (let i = 0; i < categories.length; i++) {
+                dataPoints.push(getPoint(i, scores[categories[i].code]));
+            }
+            let pathData = '';
+            for (let i = 0; i < dataPoints.length; i++) {
+                pathData += (i === 0 ? 'M ' : 'L ') + dataPoints[i].x + ' ' + dataPoints[i].y + ' ';
+            }
+            pathData += 'Z';
+            svg += '<path d="' + pathData + '" fill="rgba(251,191,36,0.2)" stroke="#fbbf24" stroke-width="2.5"/>';
+            
+            // Points
+            for (let i = 0; i < dataPoints.length; i++) {
+                svg += '<circle cx="' + dataPoints[i].x + '" cy="' + dataPoints[i].y + '" r="6" fill="' + categories[i].color + '" stroke="#0f172a" stroke-width="2"/>';
+            }
+            
+            // Labels
+            for (let i = 0; i < categories.length; i++) {
+                const labelPos = getLabelPoint(i);
+                svg += '<text x="' + labelPos.x + '" y="' + labelPos.y + '" text-anchor="middle" dominant-baseline="middle" fill="#e2e8f0" font-size="13" font-weight="600">' + categories[i].label + '</text>';
+                svg += '<text x="' + labelPos.x + '" y="' + (labelPos.y + 18) + '" text-anchor="middle" dominant-baseline="middle" fill="' + categories[i].color + '" font-size="14" font-weight="700">' + scores[categories[i].code] + '</text>';
+            }
+            
+            svg += '</svg>';
+            return svg;
+        }
+
+        // Fonction afficher les résultats
+        function afficherResultats() {
+            const resultats = calculerResultats();
+            const scores = resultats.scores;
+            const dominants = resultats.dominants;
+            const seconds = resultats.seconds;
+            const isHybride = resultats.isHybride;
+            const isOrphelin = resultats.isOrphelin;
+            
+            let profil;
+            if (isOrphelin) {
+                profil = orphelinProfil;
+            } else if (isHybride) {
+                profil = hybrideProfil;
+            } else {
+                profil = patrimoines[dominants[0]];
+            }
+
+            let html = '';
+            
+            // Header
+            html += '<div class="resultats-header">';
+            html += '<p class="resultats-label">Votre patrimoine managérial</p>';
+            html += '<h2 class="resultats-title">' + profil.icone + ' ' + profil.nom + '</h2>';
+            html += '<p class="resultats-subtitle">' + profil.sousTitre + '</p>';
+            html += '</div>';
+            
+            // Radar
+            html += '<div class="radar-container">';
+            html += '<h3 class="radar-title">Votre radar managérial</h3>';
+            html += dessinerRadar(scores, 300);
+            html += '</div>';
+            
+            // ADN
+            html += '<div class="adn-card" style="background:' + profil.gradient + '">';
+            html += '<span class="adn-icon">' + profil.icone + '</span>';
+            html += '<h3 class="adn-label">Votre ADN managérial</h3>';
+            html += '<p class="adn-text">' + profil.adn + '</p>';
+            html += '</div>';
+
+            // Hybrides
+            if ((isHybride || isOrphelin) && dominants.length > 0) {
+                const profilsComposants = dominants.concat(seconds).slice(0, 3);
+                html += '<div class="hybrides-card">';
+                html += '<h3 class="hybrides-title">' + (isOrphelin ? 'Vos tendances émergentes' : 'Vos patrimoines dominants') + '</h3>';
+                html += '<div class="hybrides-grid">';
+                for (let i = 0; i < profilsComposants.length; i++) {
+                    const code = profilsComposants[i];
+                    html += '<div class="hybride-item" style="background:' + patrimoines[code].gradient + '">';
+                    html += '<span class="hybride-icon">' + patrimoines[code].icone + '</span>';
+                    html += '<h4 class="hybride-name">' + patrimoines[code].nom + '</h4>';
+                    html += '<p class="hybride-score">' + scores[code] + ' / 15</p>';
+                    html += '</div>';
+                }
+                html += '</div>';
+                html += '</div>';
+            }
+
+            // Atouts et dangers
+            html += '<div class="grid">';
+            html += '<div class="card-atouts">';
+            html += '<div class="card-header"><span class="card-header-icon">💪</span><h3 class="card-header-title">Vos super-pouvoirs</h3></div>';
+            html += '<ul class="card-list">';
+            for (let i = 0; i < profil.atouts.length; i++) {
+                html += '<li>' + profil.atouts[i] + '</li>';
+            }
+            html += '</ul></div>';
+            
+            html += '<div class="card-dangers">';
+            html += '<div class="card-header"><span class="card-header-icon">⚠️</span><h3 class="card-header-title">Vos angles morts</h3></div>';
+            html += '<ul class="card-list">';
+            for (let i = 0; i < profil.dangers.length; i++) {
+                html += '<li>' + profil.dangers[i] + '</li>';
+            }
+            html += '</ul></div>';
+            html += '</div>';
+
+            // Développement
+            html += '<div class="dev-card">';
+            html += '<div class="dev-header"><span class="card-header-icon">🚀</span><h3 class="dev-title">Votre chemin de développement</h3></div>';
+            html += '<p class="dev-text">' + profil.developpement + '</p>';
+            html += '</div>';
+
+            // Scores détaillés (sauf hybride/orphelin)
+            if (!isHybride && !isOrphelin) {
+                const sortedCodes = ['A', 'B', 'C', 'D', 'E'].sort(function(a, b) { return scores[b] - scores[a]; });
+                html += '<div class="scores-card">';
+                html += '<h3 class="scores-title">Détail de vos scores</h3>';
+                for (let i = 0; i < sortedCodes.length; i++) {
+                    const code = sortedCodes[i];
+                    html += '<div class="score-row">';
+                    html += '<div class="score-label"><span class="score-icon">' + patrimoines[code].icone + '</span><span class="score-name">' + patrimoines[code].nom + '</span></div>';
+                    html += '<div class="score-bar"><div class="score-fill" style="width:' + ((scores[code]/15)*100) + '%;background:' + patrimoines[code].gradient + '"></div></div>';
+                    html += '<span class="score-value">' + scores[code] + '/15</span>';
+                    html += '</div>';
+                }
+                html += '</div>';
+            }
+
+            // Message final
+            html += '<div class="final-message">';
+            html += '<p>Quel que soit votre patrimoine, rappelez-vous : il ne s\'agit pas de faire table rase de vos acquis, mais de les enrichir. Votre patrimoine n\'est pas un handicap à surmonter, c\'est une fondation à développer.</p>';
+            html += '</div>';
+
+            // Bouton recommencer
+            html += '<button type="button" class="btn-restart" onclick="recommencer()">↻ Refaire le test</button>';
+
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('resultats').style.display = 'block';
+            document.getElementById('resultats').innerHTML = html;
+            document.getElementById('resultats').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Fonction recommencer
+        function recommencer() {
+            questionActuelle = 0;
+            reponses = {};
+            document.getElementById('resultats').style.display = 'none';
+            document.getElementById('resultats').innerHTML = '';
+            document.getElementById('intro').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
